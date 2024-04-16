@@ -2,9 +2,11 @@
 
 This repository implements dual-encoder end-to-end open vocabulary keyword search method described in:
 
-- [Yusuf, B., Gok, A., Gundogdu, B., Saraclar, M. (2021) "End-to-End Open Vocabulary Keyword Search". Proc. Interspeech 2021, 4388-4392, doi: 10.21437/Interspeech.2021-1399]. [ISCA link.](https://www.isca-archive.org/interspeech_2021/yusuf21_interspeech.html). [VUT link.](https://www.fit.vut.cz/research/publication/12612/.en). [Arxiv link.](https://arxiv.org/abs/2108.10357)
+- [Yusuf, B., Gok, A., Gundogdu, B., Saraclar, M. (2021) "End-to-End Open Vocabulary Keyword Search". Proc. Interspeech 2021, 4388-4392, doi: 10.21437/Interspeech.2021-1399]. [ISCA link.](https://www.isca-archive.org/interspeech_2021/yusuf21_interspeech.html) [VUT link,](https://www.fit.vut.cz/research/publication/12612/.en) [Arxiv link.](https://arxiv.org/abs/2108.10357)
 
-- [B. Yusuf, J. Černocký and M. Saraçlar, "End-to-End Open Vocabulary Keyword Search With Multilingual Neural Representations," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 31, pp. 3070-3080, 2023, doi: 10.1109/TASLP.2023.3301239.] [IEEE link.](https://ieeexplore.ieee.org/document/10201906) [VUT link.](https://www.fit.vut.cz/research/publication/13057/.en) [Arxiv link.](https://arxiv.org/abs/2308.08027)
+- [B. Yusuf, J. Černocký and M. Saraçlar, "End-to-End Open Vocabulary Keyword Search With Multilingual Neural Representations," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 31, pp. 3070-3080, 2023, doi: 10.1109/TASLP.2023.3301239.] [IEEE link,](https://ieeexplore.ieee.org/document/10201906) [VUT link,](https://www.fit.vut.cz/research/publication/13057/.en) [Arxiv link.](https://arxiv.org/abs/2308.08027)
+
+![end to end kws network architecture](images/retriever.png)
 
 # Requires
 * numpy
