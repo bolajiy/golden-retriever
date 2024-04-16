@@ -1,0 +1,21 @@
+{
+    "layers": {
+        "0": {
+            "layer_name": "Embedding",
+            "output_dim": 32
+        },
+        "1": {
+            "layer_name": "GRU",
+            "output_dim": 256,
+            "num_layers": 2,
+            "bidirectional": true
+        },
+        "2": {
+            "layer_name": "FF",
+            "output_dim": 400
+        }
+    },
+    "ordering": [
+        "0", "1", "2"
+    ]
+}

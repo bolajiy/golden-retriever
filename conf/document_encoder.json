@@ -1,0 +1,69 @@
+{
+    "layers": {
+        "0": {
+            "layer_name": "CNN",
+            "input_dim": 42,
+            "output_dim": 256
+        },
+        "6": {
+            "layer_name": "BatchNormLayer"
+        },
+        "9": {
+            "layer_name": "ReLU"
+        },
+        "4": {
+            "layer_name": "Drop",
+            "p": 0.5
+        },
+        "1": {
+            "layer_name": "GRU",
+            "output_dim": 256,
+            "bidirectional": true
+        },
+	"99": {
+            "layer_name": "LSTM",
+            "output_dim": 512,
+            "bidirectional": true
+        },
+        "100": {
+            "layer_name": "LSTM",
+            "output_dim": 512,
+            "bidirectional": true
+        },
+        "7": {
+            "layer_name": "BatchNormLayer"
+        },
+        "8": {
+            "layer_name": "Drop",
+            "p": 0.4
+        },
+        "3": {
+            "layer_name": "FF",
+            "output_dim": 400
+        },
+        "10": {
+            "layer_name": "SubsamplingLayer",
+            "factor": 2,
+            "concat": true
+        },
+        "11": {
+            "layer_name": "SubsamplingLayer",
+            "factor": 3,
+            "concat": true
+        },
+        "12": {
+            "layer_name": "Embedding",
+            "input_dim": 26,
+            "output_dim": 32
+        },
+        "13": {
+            "layer_name": "CNN",
+            "output_dim": 256,
+            "kernel_size": 13,
+            "input_dim": 42
+        }
+    },
+    "ordering": [
+        "99", "8", "100", "8", "100", "8", "100", "10", "8", "100", "8", "100", "8", "3"
+    ]
+}
