@@ -6,6 +6,19 @@ This repository implements dual-encoder end-to-end open vocabulary keyword searc
 
 - [B. Yusuf, J. Černocký and M. Saraçlar, "End-to-End Open Vocabulary Keyword Search With Multilingual Neural Representations," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 31, pp. 3070-3080, 2023, doi: 10.1109/TASLP.2023.3301239.] [IEEE link,](https://ieeexplore.ieee.org/document/10201906) [VUT link,](https://www.fit.vut.cz/research/publication/13057/.en) [Arxiv link.](https://arxiv.org/abs/2308.08027)
 
+The model has:
+- A query encoder which takes a written query in the form of a sequence and returns
+a vector encoding of the query
+- A document encoder which takes a spoken document in the form of a sequence of
+acoustic features and returns a down-sampled encoding of the document
+
+The model then outputs the sequence of inner-products between the query encoding and
+each frame of the document encoding. The model is trained so that the sigmoid of each
+output at some frame corresponds to the probability of the query occurring at that frame.
+
+Doing this across utterances in a spoken archive is used to return the locations of
+in the spoken archive.
+
 ![end to end kws network architecture](images/retriever.png)
 
 # Requires
