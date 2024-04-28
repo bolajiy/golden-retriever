@@ -29,11 +29,14 @@ in the spoken archive.
 * transformers
 
 # Libri-light 10h recipe
+## Download and extract features (xls-r by default)
 ```
-# Download, decompress and extract features (xls-r by default)
 bash golden_retriever/libri_light/prep_libri_data.sh golden_retriever/libri_light/datadir
-
-# Train e2e KWS
+# bash golden_retriever/libri_light/prep_libri_data.sh golden_retriever/libri_light/datadir mel # for mel spectrograms
+```
+## Training
+### Default E2E KWS with paired training 
+```
 python -u golden-retriever/train_kws.py \
     --trainer-json golden-retriever/conf/trainer.json \
     --qmj golden-retriever/conf/query_encoder.json \
@@ -43,31 +46,12 @@ python -u golden-retriever/train_kws.py \
     golden-retriever/libri_light/train_10h.rttm \
     golden-retriever/libri_light/datadir/feats/xlsr/librispeech_finetuning/ \
     golden-retriever/models/e2e_kws_model
-
-
-# Create document vector index
-python -u golden-retriever/make_linear_vector_index.py \
-    golden-retriever/libri_light/datadir/feats/xlsr/dev-clean/ \ # or another dataset
-    golden-retriever/models/e2e_kws_model/best \
-    golden-retriever/indexes/e2e_kws_model_dev-clean
-
-
-# Search list of keywords in index
-python golden-retriever/search_linear_index.py \
-    --no-cuda \
-    golden-retriever/libri_light/dev_clean_keywords.txt \
-    golden-retriever/indexes/e2e_kws_model_dev-clean \
-    golden-retriever/models/e2e_kws_model/tokenizer.pkl \
-    golden-retriever/models/e2e_kws_model/best/ \
-    golden-retriever/search_outputs/dev_clean/
 ```
 
-
-The repository implements joint training with unpaired speech to be published in our upcoming TASLP paper.
-
-The main idea is to learn to integrate unpaired text (similar to a language model in ASR) by jointly learning to search for text in text in addition to speech-in-text search:
-
-To use this functionality, change the training to the following:
+### JOSTER training
+Alternative joint speech text retriever (JOSTER) training.
+This allows joint training with unpaired text to be published in our upcoming TASLP paper.
+The main idea is to learn to integrate unpaired text (similar to a language model in ASR) by jointly learning to search for text-in-text in addition to text-in-speech search.
 ```
 python -u golden-retriever/train_multitask.py \
     --trainer-json golden-retriever/conf/trainer.json \
@@ -81,6 +65,31 @@ python -u golden-retriever/train_multitask.py \
     golden-retriever/models/joster_model
 ```
 
+## Indexing
+```
+# Create document vector index
+python -u golden-retriever/make_linear_vector_index.py \
+    golden-retriever/libri_light/datadir/feats/xlsr/dev-clean/ \ # or another dataset
+    golden-retriever/models/e2e_kws_model/best \
+    golden-retriever/indexes/e2e_kws_model_dev-clean
+
+```
+
+## Search
+```
+# Search list of keywords in index
+python golden-retriever/search_linear_index.py \
+    --no-cuda \
+    golden-retriever/libri_light/dev_clean_keywords.txt \
+    golden-retriever/indexes/e2e_kws_model_dev-clean \
+    golden-retriever/models/e2e_kws_model/tokenizer.pkl \
+    golden-retriever/models/e2e_kws_model/best/ \
+    golden-retriever/search_outputs/dev_clean/
+```
+
+
+
+## Scoring
 We use [NIST's F4DE](https://github.com/usnistgov/F4DE) scoring tool for scoring in the papers and we recommend that the user do the same.
 
 We however provide a scoring script for quick TWV computation.
