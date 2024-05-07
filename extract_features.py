@@ -100,11 +100,12 @@ class MelSpecExtractor(nn.Module):
 
 
 class Wav2Vec2Wrapper(nn.Module):
-    def __init__(self, model_name="facebook/wav2vec2-xls-r-300m"):
+    def __init__(self, model_name="facebook/wav2vec2-xls-r-300m", layer_to_extract=16):
         super().__init__()
         self.encoder = transformers.Wav2Vec2Model.from_pretrained(model_name)
         self.strides = [_.conv.stride[0] for _ in self.encoder.feature_extractor.conv_layers]
         self.kernel_sizes = [_.conv.kernel_size[0] for _ in self.encoder.feature_extractor.conv_layers]
+        self.layer_to_extract = layer_to_extract
 
     def forward(self,  x: Dict[str, torch.Tensor]):
         features = x['speech_features']
@@ -114,9 +115,12 @@ class Wav2Vec2Wrapper(nn.Module):
             speech_length = (1 + (speech_length - kernel_size) / stride).int()
 
         attention_mask = lengths_to_mask(speech_length).long()
-        features = self.encoder(features.squeeze(-1), attention_mask=attention_mask)
+        features = self.encoder(features.squeeze(-1), attention_mask=attention_mask, output_hidden_states=True)
 
-        x['output_speech_features'] = features.last_hidden_state
+        if self.layer_to_extract is None:
+            x['output_speech_features'] = features.last_hidden_state
+        else:
+            x['output_speech_features'] = features.hidden_states[self.layer_to_extract]
         x['output_speech_length'] = speech_length
         return x
 
