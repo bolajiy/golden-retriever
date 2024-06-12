@@ -30,7 +30,7 @@ for split in librispeech_finetuning dev-clean dev-other test-clean test-other; d
     fi
     tar xzf $split.tar.gz
     if [ -d $split ]; then
-        flacdir=split
+        flacdir=$split
     elif [ -d LibriSpeech/$split ]; then
         flacdir=LibriSpeech/$split
     else
