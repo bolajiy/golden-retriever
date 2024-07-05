@@ -32,11 +32,14 @@ The main idea is to learn to integrate unpaired text (similar to a language mode
 
 
 # Requires
-* numpy
-* pandas
-* pytorch
-* torchaudio
-* transformers
+```
+python==3.9.12
+numpy==1.24.3
+pandas==1.4.2
+torch==2.0.0
+torchaudio==2.0.0
+transformers==4.24.0
+```
 
 # Libri-light 10h recipe
 ## Download and extract features (xls-r by default)
