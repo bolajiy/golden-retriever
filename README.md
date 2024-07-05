@@ -2,11 +2,13 @@
 
 This repository implements dual-encoder end-to-end open vocabulary keyword search method described in:
 
-- [Yusuf, B., Gok, A., Gundogdu, B., Saraclar, M. (2021) "End-to-End Open Vocabulary Keyword Search". Proc. Interspeech 2021, 4388-4392, doi: 10.21437/Interspeech.2021-1399]. [ISCA link.](https://www.isca-archive.org/interspeech_2021/yusuf21_interspeech.html) [VUT link,](https://www.fit.vut.cz/research/publication/12612/.en) [Arxiv link.](https://arxiv.org/abs/2108.10357)
+- [1] Yusuf, B., Gok, A., Gundogdu, B., Saraclar, M. (2021) "End-to-End Open Vocabulary Keyword Search". Proc. Interspeech 2021, 4388-4392, doi: 10.21437/Interspeech.2021-1399. [ISCA link.](https://www.isca-archive.org/interspeech_2021/yusuf21_interspeech.html) [VUT link,](https://www.fit.vut.cz/research/publication/12612/.en) [Arxiv link.](https://arxiv.org/abs/2108.10357)
 
-- [B. Yusuf, J. Černocký and M. Saraçlar, "End-to-End Open Vocabulary Keyword Search With Multilingual Neural Representations," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 31, pp. 3070-3080, 2023, doi: 10.1109/TASLP.2023.3301239.] [IEEE link,](https://ieeexplore.ieee.org/document/10201906) [VUT link,](https://www.fit.vut.cz/research/publication/13057/.en) [Arxiv link.](https://arxiv.org/abs/2308.08027)
+- [2] B. Yusuf, J. Černocký and M. Saraçlar, "End-to-End Open Vocabulary Keyword Search With Multilingual Neural Representations," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 31, pp. 3070-3080, 2023, doi: 10.1109/TASLP.2023.3301239. [IEEE link,](https://ieeexplore.ieee.org/document/10201906) [VUT link,](https://www.fit.vut.cz/research/publication/13057/.en) [Arxiv link.](https://arxiv.org/abs/2308.08027)
 
-The model has:
+- [3] B. Yusuf and M. Saraçlar, "Written Term Detection Improves Spoken Term Detection," in IEEE/ACM Transactions on Audio, Speech, and Language Processing, vol. 32, pp. 3213-3223, 2024, doi: 10.1109/TASLP.2024.3407476. [IEEE link](https://ieeexplore.ieee.org/document/10571348)
+
+The base model [[1]](https://www.isca-archive.org/interspeech_2021/yusuf21_interspeech.html),[[2]](https://ieeexplore.ieee.org/document/10201906) has:
 - A query encoder which takes a written query in the form of a sequence and returns
 a vector encoding of the query
 - A document encoder which takes a spoken document in the form of a sequence of
@@ -20,6 +22,14 @@ Doing this across utterances in a spoken archive is used to return the locations
 in the spoken archive.
 
 ![end to end kws network architecture](images/retriever.png)
+*End-to-end keyword search model.*
+
+Also supported is joint speech and text retriever (JOSTER) training scheme published in [[3]](https://ieeexplore.ieee.org/document/10571348).
+The main idea is to learn to integrate unpaired text (similar to a language model in ASR) by jointly learning to search for text-in-text in addition to text-in-speech search.
+
+![end to end kws network architecture](images/joster.png)
+*JOSTER model.*
+
 
 # Requires
 * numpy
@@ -35,7 +45,8 @@ bash golden_retriever/libri_light/prep_libri_data.sh golden_retriever/libri_ligh
 # bash golden_retriever/libri_light/prep_libri_data.sh golden_retriever/libri_light/datadir mel # for mel spectrograms
 ```
 ## Training
-### Default E2E KWS with paired training 
+There are two training options:
+#### - Default E2E KWS with only paired training data 
 ```
 python -u golden-retriever/train_kws.py \
     --trainer-json golden-retriever/conf/trainer.json \
@@ -48,10 +59,7 @@ python -u golden-retriever/train_kws.py \
     golden-retriever/models/e2e_kws_model
 ```
 
-### JOSTER training
-Alternative joint speech text retriever (JOSTER) training.
-This allows joint training with unpaired text to be published in our upcoming TASLP paper.
-The main idea is to learn to integrate unpaired text (similar to a language model in ASR) by jointly learning to search for text-in-text in addition to text-in-speech search.
+#### - JOSTER training with paired training data plus unpaired text
 ```
 python -u golden-retriever/train_multitask.py \
     --trainer-json golden-retriever/conf/trainer.json \
